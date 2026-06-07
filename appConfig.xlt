@@ -1,7 +1,7 @@
 {
 	"appName": "小胡临时邮箱",
 	"appPackageName": "com.onemail.xh",
-	"appVersionName": "26.3.8",
+	"appVersionName": "26.3.9",
 	"appVersionCode": 100000,
 	"data": {		
 		"启用顶栏": true,

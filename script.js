@@ -1114,4 +1114,46 @@ document.addEventListener('DOMContentLoaded', () => {
             container.style.removeProperty('--mouse-y');
         });
     });
+})// 自动回复
+let autoReplyEnabled = false;
+let autoReplyMessage = '我已收到您的邮件，稍后会处理。';
+
+const autoReplyToggle = document.getElementById('auto-reply-toggle');
+const autoReplyMessageInput = document.getElementById('auto-reply-message');
+
+if (autoReplyToggle) {
+    autoReplyToggle.addEventListener('change', (e) => {
+        autoReplyEnabled = e.target.checked;
+        showSuccess(autoReplyEnabled ? '自动回复已开启' : '自动回复已关闭');
+    });
+}
+
+if (autoReplyMessageInput) {
+    autoReplyMessageInput.addEventListener('input', (e) => {
+        autoReplyMessage = e.target.value;
+    });
+}
+// ==================== 新增功能：快捷键 ====================
+document.addEventListener('keydown', (e) => {
+    // Ctrl + G：生成邮箱
+    if (e.ctrlKey && e.key === 'g') {
+        e.preventDefault();
+        document.getElementById('generate-btn').click();
+    }
+    // Ctrl + C：复制地址
+    if (e.ctrlKey && e.key === 'c' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        document.getElementById('copy-btn').click();
+    }
+    // Ctrl + S：打开设置
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        document.getElementById('settings-btn').click();
+    }
+    // Esc：关闭所有弹窗
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.confirm-dialog, .api-dialog, .send-dialog, .settings-dialog').forEach(d => {
+            d.style.display = 'none';
+        });
+    }
 });
