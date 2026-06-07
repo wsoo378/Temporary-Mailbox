@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小胡 - 临时邮箱</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <ul class="bg-bubbles">
+        <li>小胡NB</li>
+        <li>😃</li>
+        <li></li>
+        <li>📭</li>
+        <li></li>
+        <li>😜</li>
+        <li></li>
+        <li>🤑</li>
+        <li></li>
+        <li>🤫</li>
+        <li></li>
+        <li>🤓</li>
+        <li></li>
+        <li>😍</li>
+    </ul>
+    
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <button class="api-btn" id="api-btn">
+                    <i class="fas fa-code"></i> API
+                </button>
+                <button class="send-btn" id="send-btn">
+                    <i class="fas fa-paper-plane"></i> 发送验证码
+                    <span class="new-badge">NEW</span>
+                </button>
+                <button class="settings-btn" id="settings-btn">
+                    <i class="fas fa-cog"></i> 设置
+                </button>
+                <h1 class="title-with-version">
+                    <i class="fas fa-mail-bulk"></i> 临时邮箱
+                    <span class="version">正式版-26.3.8</span>
+                </h1>
+                <p>安全、私密、即用即弃的临时邮箱</p>
+            </div>
+            
+            <div class="main-content">
+                <div class="content-wrapper">
+                    <div class="left-panel">
+                        <div class="email-section">
+                            <div class="email-display" id="email-address">
+                                点击下方按钮生成临时邮箱(不要频繁生成)
+                                <div class="loader" id="email-loader"></div>
+                            </div>
+                            <div class="email-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span id="total-emails">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-envelope-open"></i>
+                                    <span id="read-emails">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span id="email-lifetime">0</span>m
+                                </div>
+                            </div>
+                            <div class="error-message" id="email-error"></div>
+                            <div class="success-message" id="email-success"></div>
+                            <div class="actions">
+                                <button class="btn btn-primary" id="generate-btn">
+                                    <i class="fas fa-plus-circle"></i> 生成邮箱
+                                </button>
+                                <button class="btn btn-secondary" id="copy-btn">
+                                    <i class="fas fa-copy"></i> 复制地址
+                                </button>
+                                <button class="btn btn-danger" id="clear-btn">
+                                    <i class="fas fa-trash-alt"></i> 清除邮箱
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="right-panel">
+                        <div class="inbox-section">
+                            <div class="inbox-header">
+                                <div class="inbox-title">
+                                    <i class="fas fa-inbox"></i> 收件箱
+                                    <div class="email-count" id="email-count">0</div>
+                                </div>
+                                <div class="search-box">
+                                    <input type="text" id="email-search" placeholder="搜索邮件...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="email-list" id="email-list">
+                                <div class="empty-inbox">
+                                    <i class="fas fa-inbox"></i>
+                                    <p>收件箱为空</p>
+                                    <p>发送到该地址的邮件将显示在这里</p>
+                                </div>
+                            </div>
+                            
+                            <div class="status-bar" id="status-bar">
+                                <div class="status-dot" id="status-dot"></div>
+                                <div class="status-text" id="status-text">准备就绪</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="email-detail" id="email-detail">
+                    <div class="email-detail-header">
+                        <h3 class="email-detail-subject" id="detail-subject"></h3>
+                        <div class="email-detail-meta">
+                            <div class="sender-info">
+                                <div class="sender-avatar" id="sender-avatar">S</div>
+                                <div class="sender-details">
+                                    <div class="sender-name" id="sender-name"></div>
+                                    <div class="sender-email" id="sender-email"></div>
+                                </div>
+                            </div>
+                            <div class="email-received" id="email-received"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="email-detail-body" id="email-body"></div>
+                    
+                    <div class="email-actions">
+                        <button class="btn btn-secondary" id="reply-btn">
+                            <i class="fas fa-reply"></i> 回复
+                        </button>
+                        <button class="btn btn-secondary" id="download-btn">
+                            <i class="fas fa-download"></i> 下载
+                        </button>
+                        <button class="close-detail" id="close-detail">
+                            <i class="fas fa-times"></i> 关闭
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>©小胡 版权所有 | 临时邮箱 • 安全私密</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="confirm-dialog" id="confirm-dialog">
+        <div class="confirm-content">
+            <h3>确认清除邮箱</h3>
+            <p>您确定要清除当前邮箱吗？这将删除现有的邮箱且无法恢复。</p>
+            <div class="confirm-actions">
+                <button class="btn btn-secondary" id="cancel-clear">取消</button>
+                <button class="btn btn-danger" id="confirm-clear">确认清除</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-dialog" id="api-dialog">
+        <div class="api-content">
+            <h3><i class="fas fa-code"></i> API 使用信息</h3>
+            <div class="api-info">
+                <h4>1. 临时邮箱API (Mail.tm)</h4>
+                <p>基本URL: <code>https://api.mail.tm</code></p>
+                <p>用于接收邮件的临时邮箱服务</p>
+                
+                <h4>2. 发送验证码API</h4>
+                <p>基本URL: <code>http://xiaoxun.my/api/v1/send.php</code></p>
+                <p>专为移动端优化的邮件发送API，支持多种验证码邮件模板</p>
+                
+                <h5>快速发送</h5>
+                <p>支持GET/POST请求，简单参数即可发送验证码邮件</p>
+                
+                <h5>接口端点</h5>
+                <ul>
+                    <li><strong>发送邮件</strong>: <code>http://xiaoxun.my/api/v1/send.php</code></li>
+                    <li><strong>生成验证码</strong>: <code>http://xiaoxun.my/api/v1/send.php?action=generate-code</code></li>
+                    <li><strong>模板列表</strong>: <code>http://xiaoxun.my/api/v1/send.php?action=templates</code></li>
+                </ul>
+                
+                <h5>参数说明</h5>
+                <ul>
+                    <li><code>template</code>: 邮件模板类型 (login, register, privacy, important, reset)</li>
+                    <li><code>source</code>: 来源名称，显示在邮件主题和发件人中</li>
+                    <li><code>code</code>: 3-12位英文字母数字验证码</li>
+                    <li><code>to_email</code>: 收件人邮箱地址</li>
+                    <li><code>proxy_email</code>: 代理发件邮箱 (可选)</li>
+                </ul>
+                
+                <h5>JavaScript调用示例</h5>
+<pre><code>fetch('http://xiaoxun.my/api/v1/send.php', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: new URLSearchParams({
+    template: 'login',
+    source: '小胡临时邮箱',
+    code: 'ABC123',
+    to_email: 'user@example.com'
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data));</code></pre>
+                
+                <p><strong>注意：</strong>严禁将我们的服务用于非法活动，禁止销售程序和/或从中获利。</p>
+            </div>
+            <button class="btn btn-primary" id="close-api-dialog">关闭</button>
+        </div>
+    </div>
+    
+    <div class="send-dialog" id="send-dialog">
+        <div class="send-content">
+            <h3><i class="fas fa-paper-plane"></i> 发送验证码邮件</h3>
+            
+            <div class="send-form">
+                <div class="form-group">
+                    <label for="template-select">邮件模板</label>
+                    <select id="template-select" class="form-control">
+                        <option value="login">登录验证</option>
+                        <option value="register">注册验证</option>
+                        <option value="privacy">隐私信息修改</option>
+                        <option value="important">重要操作</option>
+                        <option value="reset">密码重置</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="source-input">来源名称</label>
+                    <input type="text" id="source-input" class="form-control" 
+                           placeholder="例如：小胡临时邮箱" value="小胡临时邮箱">
+                    <small class="form-text">将显示在邮件主题和发件人中</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="code-input">验证码</label>
+                    <div class="code-input-group">
+                        <input type="text" id="code-input" class="form-control" 
+                               placeholder="3-12位英文字母数字" maxlength="12">
+                        <button type="button" class="btn btn-sm btn-secondary" id="generate-code-btn">
+                            <i class="fas fa-sync-alt"></i> 生成
+                        </button>
+                    </div>
+                    <small class="form-text">3-12位英文字母数字，不支持符号</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="to-email-input">收件人邮箱</label>
+                    <input type="email" id="to-email-input" class="form-control" 
+                           placeholder="例如：user@example.com">
+                    <button type="button" class="btn btn-sm btn-secondary use-current-email-btn">
+                        <i class="fas fa-mail-bulk"></i> 使用当前邮箱
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="proxy-email-input">代理发件邮箱 (可选)</label>
+                    <input type="email" id="proxy-email-input" class="form-control" 
+                           placeholder="例如：noreply@xiaoxun.my">
+                    <small class="form-text">不填则使用默认发件箱</small>
+                </div>
+                
+                <div class="send-preview">
+                    <h4><i class="fas fa-eye"></i> 邮件预览</h4>
+                    <div class="preview-content">
+                        <p><strong>主题：</strong><span id="preview-subject">登录验证码 - 小胡临时邮箱</span></p>
+                        <p><strong>内容：</strong><span id="preview-content">您正在尝试登录，验证码为：<code id="preview-code">ABC123</code>，有效期10分钟。</span></p>
+                        <p><strong>收件人：</strong><span id="preview-to">未设置</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="send-actions">
+                <button class="btn btn-secondary" id="close-send-dialog">取消</button>
+                <button class="btn btn-primary" id="send-email-btn">
+                    <i class="fas fa-paper-plane"></i> 发送邮件
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="settings-dialog" id="settings-dialog">
+        <div class="settings-content">
+            <h3><i class="fas fa-cog"></i> 设置</h3>
+            
+            <div class="settings-tabs">
+                <button class="tab-btn active" data-tab="theme">主题</button>
+                <button class="tab-btn" data-tab="general">基本设置</button>
+                <button class="tab-btn" data-tab="send-settings">发送设置</button>
+                <button class="tab-btn" data-tab="about">关于</button>
+            </div>
+            
+            <div class="tab-content active" id="theme-tab">
+                <div class="setting-option">
+                    <h4>主题颜色</h4>
+                    <div class="theme-colors">
+                        <div class="color-option" data-color="default" style="background: #6c5ce7;"></div>
+                        <div class="color-option" data-color="blue" style="background: #3498db;"></div>
+                        <div class="color-option" data-color="green" style="background: #2ecc71;"></div>
+                        <div class="color-option" data-color="red" style="background: #e74c3c;"></div>
+                        <div class="color-option" data-color="purple" style="background: #9b59b6;"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-option">
+                    <h4>深色模式</h4>
+                    <label class="switch">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="general-tab">
+                <div class="setting-option">
+                    <h4>邮件自动刷新间隔</h4>
+                    <select id="refresh-interval">
+                        <option value="4000">4秒</option>
+                        <option value="8000">8秒</option>
+                        <option value="15000">15秒</option>
+                        <option value="30000">30秒</option>
+                    </select>
+                </div>
+                
+                <div class="setting-option">
+                    <h4>邮件通知声音</h4>
+                    <label class="switch">
+                        <input type="checkbox" id="notification-sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <small class="form-text">使用浏览器内置通知音</small>
+                </div>
+                
+                <div class="setting-option">
+                    <h4>邮箱有效期提醒</h4>
+                    <label class="switch">
+                        <input type="checkbox" id="expiry-notification-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="send-settings-tab">
+                <div class="setting-option">
+                    <h4>默认来源名称</h4>
+                    <input type="text" id="default-source-input" class="form-control" 
+                           placeholder="例如：小胡临时邮箱">
+                    <small class="form-text">发送验证码邮件时默认使用的来源名称</small>
+                </div>
+                
+                <div class="setting-option">
+                    <h4>默认验证码长度</h4>
+                    <select id="default-code-length">
+                        <option value="4">4位</option>
+                        <option value="6" selected>6位</option>
+                        <option value="8">8位</option>
+                        <option value="10">10位</option>
+                    </select>
+                </div>
+                
+                <div class="setting-option">
+                    <h4>默认邮件模板</h4>
+                    <select id="default-template">
+                        <option value="login">登录验证</option>
+                        <option value="register">注册验证</option>
+                        <option value="privacy">隐私信息修改</option>
+                        <option value="important">重要操作</option>
+                        <option value="reset">密码重置</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="about-tab">
+                <div class="setting-option">
+                    <h4>关于临时邮箱</h4>
+                    <p>这是一个安全、私密、即用即弃的临时邮箱服务，可以帮助您在不暴露真实邮箱的情况下接收邮件。</p>
+                </div>
+                
+                <div class="setting-option">
+                    <h4>版本信息</h4>
+                    <p>当前版本: 正式版-26.3.8</p>
+                    <p>最后更新: 2026年1月15日</p>
+                </div>
+                
+                <div class="setting-option">
+                    <h4>技术支持</h4>
+                    <p>如有任何问题或建议，请联系我们ㅤ<a href="mailto:1075838957@qq.com" class="footer-link"><i class="fas fa-envelope"></i>1075838957@qq.com</a></p>
+                </div>
+            </div>
+            
+            <div class="settings-actions">
+                <button class="btn btn-secondary" id="cancel-settings">取消</button>
+                <button class="btn btn-primary" id="save-settings">保存设置</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
